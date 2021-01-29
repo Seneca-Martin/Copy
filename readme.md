@@ -14,7 +14,7 @@
 
 # Simulador de cryptos
 
-Simulador de inversiones en cryptos, que consulta el valor real en euros, de las diez cryptomonedas con mayor volumen de negocios actualmente (2019):
+Simulador de inversiones en cryptos, que consulta el valor real en euros, de las diez cryptomonedas con mayor volumen de negocios actualmente (2021):
 
 * Las cryptos utilizadas por esta aplicación son:
 
