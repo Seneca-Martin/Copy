@@ -36,7 +36,7 @@ Simulador de inversiones en cryptos, que consulta el valor real en euros, de las
 
 # Estructura del proyecto
 
-Cditonsta de diferentes ficheros:
+Consta de diferentes ficheros:
 * api_acces.py: gestiona llamadas y posibles errores a la api de coinmarketcap
 * movementsDB. py: gestiona llamadas a la base de datos **movements.db**
 * config.ini: contiene endpoints y api_key
