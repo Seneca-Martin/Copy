@@ -1,5 +1,6 @@
 config.ini
 .vscode/
 prueba.py
+venv/
 env/
 _pychache_/

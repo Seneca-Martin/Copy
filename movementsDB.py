@@ -3,7 +3,7 @@ import sqlite3
 database = ('data/movements.db')
 
 def inicialVerification():
-    #para saber si la DB está vacía o ya está informada
+    #Comprobamos si la DB está vacía o informada
     conn = sqlite3.connect(database)
     cursor =  conn.cursor()
 
@@ -19,7 +19,7 @@ def inicialVerification():
         return True
 
 def CryptosDBInformed(cryptos):
-    #grabamos todas las cryptos obtenidas de la api en DBcryptos
+    #Guadamos las cryptos obtenidas deen la api en DBcryptos
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -39,7 +39,7 @@ def CryptosDBInformed(cryptos):
     conn.close()
 
 def listCryptos():
-    #devuelve una lista con el symbol y nombre de las cryptos que existen en DBcryptos
+    #Entrega lista con symbol y nombre de cryptos que hay en DBcryptos
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -57,7 +57,7 @@ def listCryptos():
     return cryptos
 
 def printMovementsDB():
-    #devuelve todos los movimientos que hay en DB
+    #devuelve movimientos existentes en DB
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -72,7 +72,7 @@ def printMovementsDB():
     return(movements) 
 
 def addNewMovement(data, time, from_currency, to_currency,from_quantity, to_quantity):
-   #añadidmos un nuevo movimiento en DB
+   #añadir nuevo movimiento en DB
     conn =  sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -97,7 +97,7 @@ def addNewMovement(data, time, from_currency, to_currency,from_quantity, to_quan
     conn.close()
 
 def MoneySpend(crypto, isfrom=True ):
-    #buscamos en la DB y devolvemos la suma de todos las cantidades de una misma momenda en to (isfrom=false) o en from(isfrom=true) 
+    #busca en Base de Datos y devuelve la suma de las cantidades de una misma momenda en to (isfrom=false) o en from(isfrom=true) 
     if isfrom:
         fieldSelect = 'from_quantity'
         fieldWhere = 'from_currency'
@@ -131,7 +131,7 @@ def MoneySpend(crypto, isfrom=True ):
     return(valor)
 
 def getIdFromToCryptoDB(crypto, isCrytpo = True):
-    # obtenemos en symbolo a partir de la id o al contrario dependiendo de si isCrypto
+    # obteniendo el symbolo por el id o al reves dependiendo de si isCrypto
     if isCrytpo:
         fieldSelect = 'id'
         fieldWhere = 'symbol'
@@ -152,7 +152,7 @@ def getIdFromToCryptoDB(crypto, isCrytpo = True):
     return (n[0])
   
 def symbolCrytpo():
-    #obtenemos el symbol de las cryptos en la tabla cryptos
+    #obteniendo los symbol de las cryptos de la tabla
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 

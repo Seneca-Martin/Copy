@@ -54,7 +54,7 @@ class Movements(ttk.Frame):
         self.canvas.config(scrollregion= self.canvas.bbox('all'))
  
     def printHeaders(self): 
-        #pintamos las cabeceras   
+        #pintando cabeceras   
         for i in range (0, 7):
             self.lblDisplay = ttk.Label(self, text=self._head[i], font='verdana, 10', width = 16, background ='white', borderwidth=1,relief=GROOVE, anchor=CENTER)
             self.lblDisplay.grid(row=0, column=i, pady=1)
@@ -64,7 +64,7 @@ class Movements(ttk.Frame):
         self.lblDisplay.grid_propagate(0)        
 
     def addUnitPriceIntoMovements(self):
-        #Calculamos y añadimos el precio unitario y cambiamos la id_crypto por el symbol_crypto
+        #Calcula y añade el coste unidad y cambia la id_crypto por symbol_crypto
         self.movements=movementsDB.printMovementsDB()
         for movement in self.movements:
             i=0
@@ -77,7 +77,7 @@ class Movements(ttk.Frame):
                 i += 1
     
     def printMovements(self): 
-        #formateamos las salidas con 5 decimales máx. y pintamos los movimientos y actualizamos el scrollregion para mostrar el nuevo movimiento 
+        #Define el formato de salidas a 5 decimales máximo y pinta los movimientos actualizando el scrollregion con el nuevo movimiento 
         self.addUnitPriceIntoMovements()
         j=0
         for movement in self.movements:
@@ -95,7 +95,7 @@ class Movements(ttk.Frame):
         self.canvas.config(scrollregion= self.canvas.bbox('all'))             
 
     def actualizarScrollregion(self):
-        #actualizamos la scrollregion para que se muestre la última transacción
+        #actualiza scrollregion muestrando última transacción
         self.frame.update_idletasks()
         self.canvas.config(scrollregion= self.canvas.bbox('all'))             
 
@@ -105,7 +105,7 @@ class NewTransaction(ttk.Frame):
         ttk.Frame.__init__(self, height=210, width =_width, borderwidth=2, relief= GROOVE)
         self.simulador=parent
 
-        #variables de control
+        #estas son variables de control
         self.strFrom_Q = StringVar(value='')
         self.strOldFrom_Q = self.strFrom_Q.get()
         self.strFrom_Q.trace('w', self.entryValidationFrom)
@@ -146,7 +146,7 @@ class NewTransaction(ttk.Frame):
         self.checkButton.grid(column=4, row=3, padx=30, pady=_pady)
     
     def selectNewCryptoInComboBox(self, event):
-        #vuelve a activar el boton aceptar y limpia la label 
+        #reactivar boton aceptar y limpia label 
         self.acceptButton.config(state='enable')
         self.controlErrorCryptos.config(text=' ')
 
@@ -160,7 +160,7 @@ class NewTransaction(ttk.Frame):
         return(symbolCrypto)
     
     def strCleaner(self):
-        #eliminamos los espacios
+        #eliminamos espacios
         strcleaned=''
         for i in range (len(self.strFrom_Q.get())):
             if self.strFrom_Q.get()[i] != ' ':
@@ -168,7 +168,7 @@ class NewTransaction(ttk.Frame):
         return(strcleaned) 
     
     def entryValidationFrom(self, *args):
-        #validamos que solo entren valores numéricos y no tenga espacios
+        #validar entradas con valores numéricos y sin espacios
         if self.strFrom_Q.get()=='':
                 self.strOldFrom_Q = self.strFrom_Q.get()
         else:
@@ -183,7 +183,7 @@ class NewTransaction(ttk.Frame):
                 self.strFrom_Q.set(self.strOldFrom_Q)
     
     def processingApiInfo(self, response, cryptoname):
-        #procesamos la informacion para conseguir el precio y calculamos el unitario
+        #procesar informacion para conseguir precio y calcular el unitario
         values= json.loads(response)
         valorQ = values['data']['quote'][cryptoname]['price']
         priceU = float(self.strFrom_Q.get())/valorQ
@@ -192,7 +192,7 @@ class NewTransaction(ttk.Frame):
         return(valorQ)
     
     def informedAndDiferentCombo(self):
-        #comprobamos que los combos esten informados, sean diferentes y que el valor de Q sea distinto a 0
+        #comprueba los combos que esten informados, sean diferentes y que el valor de Q sea distinto a 0
         if len(self.getFromCrypto.get()) != 0 and len(self.getToCrypto.get()) != 0:
             self._from = self.whatCrypto(self.getFromCrypto.get())
             self._to = self.whatCrypto(self.getToCrypto.get())
@@ -210,7 +210,7 @@ class NewTransaction(ttk.Frame):
             return(FALSE)   
         
     def valueFromQValidate(self):
-        #controla que el valor de from_Q no sea superior al maximo permitido por la api y que dispongamos de las cryptos en cuestión para poder comprar
+        #controla el valor de from_Q para que no sea superior al maximo permitido por la api y que podamos disponer de las cryptos seleccionadas para su compra
         maximumValueApi = 1000000000
         if float(self.strFrom_Q.get())<= maximumValueApi and self._from == 'EUR':
             return(TRUE)
@@ -228,7 +228,7 @@ class NewTransaction(ttk.Frame):
             return(FALSE)
         
     def validateAllValues(self):
-        #valida que todos los campos para realizar la llamada
+        #valida los campos para realizar la llamada
         fromAndToDiferentBol = self.informedAndDiferentCombo()
         if fromAndToDiferentBol:
             valueStatus = self.valueFromQValidate()
@@ -240,7 +240,7 @@ class NewTransaction(ttk.Frame):
             return(FALSE)
     
     def checkTransaction(self, addDB=TRUE):
-        #comprobamos que combos sean distintos y el valor no sea 0 y hacemos la llamada a la api
+        #comprueba que los combos sean distintos y su valor no sea 0 y hace la llamada a la api
         allValuesValidate = self.validateAllValues()
         if allValuesValidate:
             self.acceptButton.config(state= 'enable')
@@ -250,7 +250,7 @@ class NewTransaction(ttk.Frame):
                 response=api_acces.accesoAPI(url)
                 self.cryptoPriceTo=self.processingApiInfo(response,self._to)
                 if addDB == TRUE:
-                    #graba los datos en la DB y resetea todos los campos y los desactiva
+                    #graba datos en DB y resetea los campos y los desactiva
                     self.addNewTransactionIntoDB(self._from, self._to)
                     self.switchNewTransaction(FALSE,TRUE)
                     self.simulador.addNewMovementintoMovement()
@@ -259,7 +259,7 @@ class NewTransaction(ttk.Frame):
                 self.controlErrorCryptos.config(text=error)
 
     def addNewTransactionIntoDB(self,symbolCrypto_from, symbolCrypto_to):
-        #procesar y obtener toda la información que necesitamos para la DB
+        #procesa y obtiene la información que se necesita para la DB
         data = time.strftime('%Y-%m-%d')
         hour=datetime.datetime.now().strftime("%H:%M:%S.%f")
         hour = hour[:(len(hour)-3)]
@@ -269,13 +269,13 @@ class NewTransaction(ttk.Frame):
         movementsDB.addNewMovement(data, hour, from_currency,to_currency,self.strFrom_Q.get(), self.cryptoPriceTo)
 
     def valuesComboBox(self):
-        #informar ComboBox con las cryptos
+        #informa ComboBox con las cryptos
         result = movementsDB.listCryptos()
         self.toCryptoCombo.config(values=result)
         self.fromCryptoCombo.config(values=result)
        
     def switchNewTransaction(self, switch_On = FALSE , transactionButton=FALSE):
-        #esto es un interruptor que activa y desactiva el frame newtransaction, tambien desactiva el boton de nueva transacción hasta que cancela o se realiza la nueva transaccion
+        #interruptor que activa y desactiva el frame newtransaction, tambien desactiva el boton de nueva transacción hasta que cancela o se realiza la nueva transaccion
         if switch_On:
             switch_state='enable'
             colorbg = 'white'
@@ -323,7 +323,7 @@ class Results(ttk.Frame):
         self.calculateButton.grid(column=4, row=3, padx= 55, pady=_pady)
     
     def moneySpend(self):
-        #calculamos el total de euros invertidos
+        #calcula el total de euros invertidos
         eurosFrom=movementsDB.MoneySpend('EUR')
         eurosTo=movementsDB.MoneySpend('EUR',FALSE)
         totalMoneySpend = eurosFrom - eurosTo
@@ -331,7 +331,7 @@ class Results(ttk.Frame):
         self.moneySpendLbl.config(text=totalMoneySpend)
 
     def calculateCurrentValueApi(self, resultCurrentValue,cryptoSymbolFrom):
-        #primero verificamos que hayamos invertido en la crypto en cuestion, si es asi hacemos la llamada a la api para obtener su valor en euros
+        #verifica que se haya invertido en la crypto elegida, si es asi se llama a la api para obtener su valor en euros
         if resultCurrentValue != 0:
             try:
                 url= price_conversion.format(resultCurrentValue,cryptoSymbolFrom, 'EUR', api_key)
@@ -345,7 +345,7 @@ class Results(ttk.Frame):
             return(0)
     
     def currentValue(self,cryptos):
-        #recorremos con el for todas las cryptos excepto eur y calculamos por cada crypto en from y to
+        #el bucle for recorre las cryptos excepto eur y calcula por cada crypto en from y to
         totalCurrentValuesResults = 0
         for i in range (len(cryptos)-1):
             sumatorioFromCrypto= movementsDB.MoneySpend(cryptos[i])
@@ -356,14 +356,14 @@ class Results(ttk.Frame):
         self.currentValueLbl.config(text=totalCurrentValuesResults)
     
     def earnings(self):
-        #obtenemos los symbols de las cryptos en la base de datos y calculamos la inversión realizada y el resultado 
+        #obtiene symbols de cryptos en base de datos y calcula la inversión realizada y su resultado 
         cryptoSymbol=movementsDB.symbolCrytpo()
         
         self.moneySpend()
         self.currentValue(cryptoSymbol)
     
     def resetLabels(self):
-        #Cuando se quiere hacer un nuevo movimiento se resetean las labels de resultado
+        #si se desea hacer un nuevo movimiento se resetean las labels de resultado
         self.moneySpendLbl.config(text='')
         self.currentValueLbl.config(text='')
 
@@ -371,11 +371,11 @@ class Results(ttk.Frame):
 class Simulador(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, width='900', height='600')
-        #comprobamos si la tabla cryptos de DB está informada, sino lo está, la inicializamos 
+        #comprueba si la tabla cryptos de DB está informada, sino lo está, la inicializamos 
         initDBCryptos= movementsDB.inicialVerification()
         if not initDBCryptos:
             self.initializationBDCryptos()
-        #disenyo y estructuración de la aplicación
+        #estructuración de la aplicación
         self.Button1 = ttk.Button(self, text ='+', command=lambda: self.buttonSimulador(), width=3)
         self.Button1.place(x=870, y=40)
 
@@ -392,17 +392,17 @@ class Simulador(ttk.Frame):
         self.results.place(x=40, y=500)
 
     def addNewMovementintoMovement(self):
-        #volvemos a pintar los movimientos después de hacer una transacción y actualizamos la scrollbar
+        #pinta los movimientos después de una transacción y actualiza la scrollbar
         self.movements.printMovements()
         self.movements.actualizarScrollregion()
            
     def buttonSimulador(self):
-        #activamos las labels de newtransaction y limpiamos las labels de results
+        #activa labels de newtransaction y limpia labels results
         self.newTransaction.switchNewTransaction(TRUE)
         self.results.resetLabels()
 
     def initializationBDCryptos(self):
-        #llamamos a la api para conseguir el name y symbol de las cryptos que usaremos
+        #llama a la api para conseguir el name y symbol de las cryptos que vamos a usar
         url = cryptos.format(api_key)
         try:
             callback= api_acces.accesoAPI(url)
@@ -412,7 +412,7 @@ class Simulador(ttk.Frame):
         self.getCryptos(callback)    
 
     def getCryptos(self, txt):
-        #procesamos los datos que nos devuelve la apicall y los grabamos en la DB y añadimos el euro
+        #procesa datos que nos devuelve apicall y los graba en DB y añadimos el euro
         currencies= json.loads(txt)
         results= {}
         symbols = currencies['data']

@@ -1,20 +1,20 @@
 # Instalación
 
-1. Instalar dependencias
+1. Instala las dependencias necesarias
     ```
     pip install -r requirements.txt
     ```
-2. Crear el fichero config.ini
+2. Crea el fichero config.ini
 
-    * Usar el fichero **config_Users.ini** de muestra
-    * Puedes obtener tu  de coinmarketcap [aquí](https://coinmarketcap.com/api/)
+    * Usar el fichero **config_Users.ini** como referencia
+    * Obten tu apiKey de coinmarketcap [aquí](https://coinmarketcap.com/api/)
 
-3. Ejecutar el programa desde **-main.py**
+3. Ejecuta la aplicación desde **-main.py**
 
 
 # Simulador de cryptos
 
-Simulador de inversiones en cryptos, que consulta el valor real en euros, de las diez cryptomonedas con mayor volumen de negocios actualmente (2019):
+Simulador de inversiones en cryptos, que consulta el valor real en euros, de las diez cryptomonedas con mayor volumen de negocios actualmente (2021):
 
 * Las cryptos utilizadas por esta aplicación son:
 
@@ -36,16 +36,16 @@ Simulador de inversiones en cryptos, que consulta el valor real en euros, de las
 
 # Estructura del proyecto
 
-El proyecto consta de diferentes ficheros:
-* api_acces.py: gestiona las llamadas y errores a la api de coinmarketcap
-* movementsDB. py: gestiona todas las llamadas a la base de datos **movements.db**
-* config.ini: contiene los endpoint y la api_key
-* requierements.txt: contiene las librerías necesarias para hacer funcionar el simulador
-* main.py: el archivo principal que lanza la aplicación
+Cditonsta de diferentes ficheros:
+* api_acces.py: gestiona llamadas y posibles errores a la api de coinmarketcap
+* movementsDB. py: gestiona llamadas a la base de datos **movements.db**
+* config.ini: contiene endpoints y api_key
+* requierements.txt: librerías necesarias para la ejecución de la aplicación
+* main.py: archivo principal que lanza la aplicación
 
-Estos archivos disponen de comentarios que explican lo que hacen cada uno de ellos.
+Los archivos disponen de comentarios explicando la función de cada uno de ellos.
 
-El formato de la salida de las cryptos de from_Q, to_Q y precio unitario, es de 5 decimales, ya que en algunos casos, el valor es muy bajo.
+El formato de la salida de las cryptos de from_Q, to_Q y precio unitario, es de 5 decimales, debido a que en algunos casos, el valor es muy bajo.
 
 
 
