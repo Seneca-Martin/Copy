@@ -7,7 +7,7 @@ import json
 import movementsDB
 import api_acces
 
-_width='900'
+_width='1200'
 _lblwidth = 10
 font='Verdana 10 bold'
 _pady=8
@@ -370,14 +370,14 @@ class Results(ttk.Frame):
 
 class Simulador(ttk.Frame):
     def __init__(self, parent):
-        ttk.Frame.__init__(self, width='900', height='600')
+        ttk.Frame.__init__(self, width='980', height='600')
         #comprueba si la tabla cryptos de DB está informada, sino lo está, la inicializamos 
         initDBCryptos= movementsDB.inicialVerification()
         if not initDBCryptos:
             self.initializationBDCryptos()
         #estructuración de la aplicación
-        self.Button1 = ttk.Button(self, text ='+', command=lambda: self.buttonSimulador(), width=3)
-        self.Button1.place(x=870, y=40)
+        self.Button1 = ttk.Button(self, text ='+ Transación', command=lambda: self.buttonSimulador(), width=10)
+        self.Button1.place(x=860, y=40)
 
         self.movements =Movements(self, height=240, width= _width)
         #self.movements.grid(column=0, row=0, padx=20)
@@ -429,7 +429,7 @@ class MainApp(Tk):
 
     def __init__(self):
         Tk.__init__(self)
-        self.geometry("920x600")
+        self.geometry("980x600")
         self.title("INVERT IN CRYPTOS")
         self.resizable(0,0)
         self.simulador = Simulador(self)
