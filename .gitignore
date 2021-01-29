@@ -1,0 +1,5 @@
+config.ini
+.vscode/
+prueba.py
+env/
+_pychache_/
