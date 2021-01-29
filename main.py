@@ -113,7 +113,7 @@ class NewTransaction(ttk.Frame):
         self.getFromCrypto = StringVar()
         self.getToCrypto = StringVar()
         
-        ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, padx=2, pady=20, sticky=W)
+        ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, padx=1, pady=20, sticky=W)
         ttk.Label(self, text='From:', width=_lblwidth, font=font, anchor=E).grid(column=0, row=1, padx=_padx, pady=_pady)
         ttk.Label(self, text='Q:', width=_lblwidth, font=font, anchor=E).grid( column=0, row =2, padx=_padx, pady=_pady)
         ttk.Label(self, text='To:', width=_lblwidth, font=font, anchor=E).grid(column=2, row=1, padx=_padx, pady=_pady)
@@ -138,12 +138,12 @@ class NewTransaction(ttk.Frame):
         self.toCryptoCombo.bind("<<ComboboxSelected>>", self.selectNewCryptoInComboBox)
         self.valuesComboBox()
 
-        self.acceptButton = ttk.Button(self, text='Aceptar', command=lambda: self.checkTransaction(), state='disable')
-        self.acceptButton.grid(column=4, row=1, padx=60, pady=_pady)
         self.cancelButton = ttk.Button(self, text='Cancelar', command=lambda: self.switchNewTransaction(FALSE,TRUE), state='disable')
-        self.cancelButton.grid(column=4, row=2, padx=30, pady=_pady)
+        self.cancelButton.grid(column=4, row=1, padx=30, pady=_pady)
         self.checkButton = ttk.Button(self, text = 'Comprobar', command =lambda: self.checkTransaction(FALSE), state='disable')
-        self.checkButton.grid(column=4, row=3, padx=30, pady=_pady)
+        self.checkButton.grid(column=4, row=2, padx=30, pady=_pady)
+        self.acceptButton = ttk.Button(self, text='Aceptar', command=lambda: self.checkTransaction(), state='disable')
+        self.acceptButton.grid(column=4, row=3, padx=100, pady=_pady)
     
     def selectNewCryptoInComboBox(self, event):
         #reactivar boton aceptar y limpia label 
@@ -430,7 +430,7 @@ class MainApp(Tk):
     def __init__(self):
         Tk.__init__(self)
         self.geometry("980x600")
-        self.title("INVERT IN CRYPTOS")
+        self.title("INVIERTE EN CRYPTOS")
         self.resizable(0,0)
         self.simulador = Simulador(self)
         self.simulador.place(x=0, y=0)
