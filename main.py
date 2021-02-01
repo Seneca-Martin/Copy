@@ -6,6 +6,8 @@ import configparser
 import json
 import movementsDB
 import api_acces
+from tkinter import messagebox
+
 
 _width='1200'
 _lblwidth = 10
@@ -125,6 +127,7 @@ class NewTransaction(ttk.Frame):
         self.to_QLbl = ttk.Label(self,text='', font=font, width=22, anchor=E, background='whitesmoke', relief=GROOVE)
         self.to_QLbl.grid(column=3, row=2)
         self.controlErrorCryptos = ttk.Label(self, font='Verdana 8', foreground='red', anchor=CENTER, text='')
+        #self.controlErrorCryptos = messagebox.showinfo(message="Mensaje", title="Error")
         self.controlErrorCryptos.grid(column=0, row=4, columnspan=5)
         
         self.from_Q = ttk.Entry(self, text='', font=font, width=22, textvariable=self.strFrom_Q, justify=RIGHT, state='disable')
@@ -200,13 +203,16 @@ class NewTransaction(ttk.Frame):
                 return (TRUE)
             else:
                 if self._from == self._to:
-                    self.controlErrorCryptos.config(text='Los campos From y To deben ser distintos')
+                    #self.controlErrorCryptos.config(text='Los campos From y To deben ser distintos')
+                    self.controlErrorCryptos.config(messagebox.showinfo(message="Los campos From y To deben ser distintos", title="¡¡Ups, algo falla!!"))
                 if self.strFrom_Q.get() == '0' or self.strFrom_Q.get() =='':
-                    self.controlErrorCryptos.config(text='{} El valor Q debe ser mayor que 0. '.format(self.controlErrorCryptos.config('text')[4]))
+                    #self.controlErrorCryptos.config(text='{} El valor Q debe ser mayor que 0. '.format(self.controlErrorCryptos.config('text')[4]))
+                    self.controlErrorCryptos.config(messagebox.showinfo(message="El valor Q debe ser mayor que 0", title="¡¡Ups, algo falla!!"))
                 self.acceptButton.config(state='disable')
                 return(FALSE)    
         else:
-            self.controlErrorCryptos.config(text ='Los campos From y To deben estar informados.')
+            #self.controlErrorCryptos.config(text ='Los campos From y To deben estar informados.')
+            self.controlErrorCryptos.config(messagebox.showinfo(message="Los campos From y To deben estar informados", title="¡¡Ups, algo falla!!"))
             return(FALSE)   
         
     def valueFromQValidate(self):
@@ -220,7 +226,8 @@ class NewTransaction(ttk.Frame):
             self.cryptoInvertida = calculateCryptoto - calculateCryptofrom
             if self.cryptoInvertida < float(self.strFrom_Q.get()):
                 self.acceptButton.config(state= 'disable')
-                self.controlErrorCryptos.config(text='Actualmente dispones de {} {}. Modifique el valor para realizar la transacción'.format(self.cryptoInvertida,self._from))
+                #self.controlErrorCryptos.config(text='Actualmente dispones de {} {}. Modifique el valor para realizar la transacción'.format(self.cryptoInvertida,self._from))
+                self.controlErrorCryptos.config(messagebox.showinfo(message="Actualmente dispones de {} {}. Modifique el valor para realizar la transacción".format(self.cryptoInvertida,self._from), title="¡¡Ups, algo falla!!"))
                 return(FALSE)
             else:
                 return(TRUE)  
@@ -256,7 +263,8 @@ class NewTransaction(ttk.Frame):
                     self.simulador.addNewMovementintoMovement()
             except Exception as e:
                 error=('Se ha producido una incidencia:',e)
-                self.controlErrorCryptos.config(text=error)
+                #self.controlErrorCryptos.config(text=error)
+                self.controlErrorCryptos.config(messagebox.showinfo(message=error, title="¡¡Ups, algo falla!!"))
 
     def addNewTransactionIntoDB(self,symbolCrypto_from, symbolCrypto_to):
         #procesa y obtiene la información que se necesita para la DB
