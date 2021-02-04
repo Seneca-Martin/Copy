@@ -1,5 +1,7 @@
+#import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+#from tkinter.ttk import *
 import time
 import datetime
 import configparser
@@ -33,7 +35,7 @@ class Movements(ttk.Frame):
 
         self.printHeaders()
 
-        self.marcoFrame= Frame(self, bd=2, relief=GROOVE)
+        self.marcoFrame= Frame(self, bd=2, bg="#49A", relief=GROOVE)
         self.marcoFrame.grid(column=0, row=1, columnspan=8)
         
         self.verticaScrollbar = Scrollbar(self.marcoFrame)
@@ -107,14 +109,17 @@ class NewTransaction(ttk.Frame):
         ttk.Frame.__init__(self, height=210, width =_width, borderwidth=2, relief= GROOVE)
         self.simulador=parent
 
-        #estas son variables de control
+        self.s = ttk.Style() #Creamos el style paa este frame ------
+        self.s.configure('TFrame', background='white') #aplicamos el stylo---------
+
+        #variables de control
         self.strFrom_Q = StringVar(value='')
         self.strOldFrom_Q = self.strFrom_Q.get()
         self.strFrom_Q.trace('w', self.entryValidationFrom)
 
         self.getFromCrypto = StringVar()
         self.getToCrypto = StringVar()
-        
+         
         ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, padx=1, pady=20, sticky=W)
         ttk.Label(self, text='From:', width=_lblwidth, font=font, anchor=E).grid(column=0, row=1, padx=_padx, pady=_pady)
         ttk.Label(self, text='Q:', width=_lblwidth, font=font, anchor=E).grid( column=0, row =2, padx=_padx, pady=_pady)
@@ -127,7 +132,6 @@ class NewTransaction(ttk.Frame):
         self.to_QLbl = ttk.Label(self,text='', font=font, width=22, anchor=E, background='whitesmoke', relief=GROOVE)
         self.to_QLbl.grid(column=3, row=2)
         self.controlErrorCryptos = ttk.Label(self, font='Verdana 8', foreground='red', anchor=CENTER, text='')
-        #self.controlErrorCryptos = messagebox.showinfo(message="Mensaje", title="Error")
         self.controlErrorCryptos.grid(column=0, row=4, columnspan=5)
         
         self.from_Q = ttk.Entry(self, text='', font=font, width=22, textvariable=self.strFrom_Q, justify=RIGHT, state='disable')
@@ -279,8 +283,11 @@ class NewTransaction(ttk.Frame):
     def valuesComboBox(self):
         #informa ComboBox con las cryptos
         result = movementsDB.listCryptos()
+        resultFrom = movementsDB.listCryptosInvert() #and calculateCurrentValueApi.resultCurrentValue != 0-------
+        #resultFrom = movementsDB.getIdFromToCryptoDB(symbolCrypto_from) #----------
         self.toCryptoCombo.config(values=result)
-        self.fromCryptoCombo.config(values=result)
+        #self.fromCryptoCombo.config(values=result)---Este era el bueno antiguo
+        self.fromCryptoCombo.config(values=resultFrom) #---------
        
     def switchNewTransaction(self, switch_On = FALSE , transactionButton=FALSE):
         #interruptor que activa y desactiva el frame newtransaction, tambien desactiva el boton de nueva transacción hasta que cancela o se realiza la nueva transaccion
@@ -378,7 +385,14 @@ class Results(ttk.Frame):
 
 class Simulador(ttk.Frame):
     def __init__(self, parent):
-        ttk.Frame.__init__(self, width='980', height='600')
+        ttk.Frame.__init__(self, width='980', height='600') 
+
+        self.s = ttk.Style() #Create style used by default for all Frames ------
+        self.s.configure('TFrame', background='green') #---------
+        #tab1 = ttk.Frame(Frame, style='Simulador.TFrame')
+        #mainframe.add(tab1, text="Tab1")
+        #self.config(background="#49A") #-----
+
         #comprueba si la tabla cryptos de DB está informada, sino lo está, la inicializamos 
         initDBCryptos= movementsDB.inicialVerification()
         if not initDBCryptos:
@@ -394,6 +408,7 @@ class Simulador(ttk.Frame):
         self.newTransaction= NewTransaction(self, height=220, width=_width)
         #self.newTransaction.grid(column=0, row=1, padx=20)
         self.newTransaction.place(x=40, y=260)
+        
 
         self.results = Results(self, height=100, width=_width)
         #self.results.grid(column=0, row=2, pady=40)

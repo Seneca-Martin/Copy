@@ -19,7 +19,7 @@ def inicialVerification():
         return True
 
 def CryptosDBInformed(cryptos):
-    #Guadamos las cryptos obtenidas deen la api en DBcryptos
+    #Guadamos las cryptos obtenidas de la API en DBcryptos
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -55,6 +55,29 @@ def listCryptos():
     
     conn.close()
     return cryptos
+
+
+def listCryptosInvert():
+    #Entrega lista con symbol y nombre de cryptos en las que ya se ha invertido mas los Euros---------------
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT DISTINCT symbol, name
+        FROM cryptos, movements  
+        WHERE cryptos.id=13 OR to_currency= cryptos.id;
+    '''
+
+    rows=cursor.execute(query)
+    cryptosInverts=[]
+    text=''
+    for row in rows:
+        text= '{} - {}'.format(row[0], row[1])
+        cryptosInverts.append(text)
+    
+    conn.close()
+    return cryptosInverts
+
 
 def printMovementsDB():
     #devuelve movimientos existentes en DB

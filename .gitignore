@@ -1,6 +1,7 @@
 config.ini
 .vscode/
-prueba.py
+
 venv/
 env/
-_pychache_/
+_pycache_/
+data/
