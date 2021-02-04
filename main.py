@@ -263,6 +263,7 @@ class NewTransaction(ttk.Frame):
                     self.addNewTransactionIntoDB(self._from, self._to)
                     self.switchNewTransaction(FALSE,TRUE)
                     self.simulador.addNewMovementintoMovement()
+                    self.valuesComboBox()
             except Exception as e:
                 error=('Se ha producido una incidencia:',e)
                 #self.controlErrorCryptos.config(text=error)
@@ -386,8 +387,11 @@ class Simulador(ttk.Frame):
     def __init__(self, parent):
         ttk.Frame.__init__(self, width="910", height="600") 
 
-        self.s = ttk.Style() #Creamos el style usado para este Frame ------
-        self.s.configure('TFrame', background='white') #---------
+        #s = ttk.Style() #Creamos el style usado para este Frame ------
+        #s.theme_use('clam')
+        #self.s.configure('TFrame', background='#434346') #---------
+        #self.s.configure('TLabel', background='#434346') #---------
+        #self.s.configure('My.TButton', background='#434346') #---------
         #tab1 = ttk.Frame(Frame, style='Simulador.TFrame')
         #mainframe.add(tab1, text="Tab1")
         #self.config(background="#49A") #-----
@@ -454,9 +458,13 @@ class MainApp(Tk):
         Tk.__init__(self)
         self.geometry("910x600")
         self.title("INVIERTE EN CRYPTOS")
+        #self.config(bg='#434346')
         self.resizable(0,0)
         self.simulador = Simulador(self)
         self.simulador.place(x=0, y=0)
+
+        s = ttk.Style() # ------
+        s.theme_use('aqua') # -------
        
     def start(self):
         self.mainloop()

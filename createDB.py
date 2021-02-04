@@ -1,25 +1,26 @@
 import sqlite3
 
-database = ('data/movements.db')
+database = ('data/movements1.db')
 
 conn=sqlite3.connect(database)
 
-def createCryptos ()
+
+def createCryptos ():
     try:
         conn.execute('''CREATE TABLE cryptos (
-                              id INTERGER PRIMARY KEY AUTOINCREMENT,
+                              id INTEGER PRIMARY KEY AUTOINCREMENT,
                               symbol TEXT NOT NULL,
                               name TEXT NOT NULL
                         )''')
         print("se creo la tabla cryptos")                        
     except sqlite3.OperationalError:
         print("La tabla cryptos ya existe")                    
-    conn.close()
+    
 
-    def createMovements ()
+def createMovements ():
     try:
         conn.execute('''CREATE TABLE movements (
-                              id INTERGER PRIMARY KEY AUTOINCREMENT,
+                              id INTEGER PRIMARY KEY AUTOINCREMENT,
                               date TEXT NOT NULL,
                               timme TEXT NOT NULL,
                               from_currency INTERGER NOT NULL,
@@ -28,6 +29,9 @@ def createCryptos ()
                               to_quantity REAL NOT NULL
                         )''')
         print("se creo la tabla movements")                        
-    except sqlite3.OperationalError:
-        print("La tabla movements ya existe")                    
-    conn.close()
+    except sqlite3.OperationalError as e:
+        print("La tabla movements ya existe", e)                    
+
+createCryptos()
+createMovements()
+conn.close()
