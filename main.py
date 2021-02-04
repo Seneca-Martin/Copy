@@ -1,7 +1,5 @@
-#import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-#from tkinter.ttk import *
 import time
 import datetime
 import configparser
@@ -35,8 +33,8 @@ class Movements(ttk.Frame):
 
         self.printHeaders()
 
-        self.marcoFrame= Frame(self, bd=2, bg="#49A", relief=GROOVE)
-        self.marcoFrame.grid(column=0, row=1, columnspan=8)
+        self.marcoFrame= Frame(self, bd=2, bg="white", relief=GROOVE)
+        self.marcoFrame.grid(column=0, row=1, columnspan=18)
         
         self.verticaScrollbar = Scrollbar(self.marcoFrame)
         self.verticaScrollbar.grid(row=0, column=1,sticky=N+S)
@@ -44,11 +42,11 @@ class Movements(ttk.Frame):
         self.canvas = Canvas(self.marcoFrame, yscrollcommand=self.verticaScrollbar.set)
         
         self.canvas.grid(row=0, column=0, sticky=N+S+E+W)
-        self.canvas.config(width=810,height= 180)
+        self.canvas.config(width=801,height= 180)
         self.canvas.grid_propagate(0)
         self.verticaScrollbar.config(command=self.canvas.yview)
        
-        self.frame = Frame(self.canvas, width=810, height= 180)
+        self.frame = Frame(self.canvas, width=801, height= 180)
         
         self.printMovements()
           
@@ -60,7 +58,7 @@ class Movements(ttk.Frame):
     def printHeaders(self): 
         #pintando cabeceras   
         for i in range (0, 7):
-            self.lblDisplay = ttk.Label(self, text=self._head[i], font='verdana, 10', width = 16, background ='white', borderwidth=1,relief=GROOVE, anchor=CENTER)
+            self.lblDisplay = ttk.Label(self, text=self._head[i], font='verdana, 10', width = 16, background ='white', borderwidth=1, relief=GROOVE, anchor=CENTER)
             self.lblDisplay.grid(row=0, column=i, pady=1)
             self.lblDisplay.grid_propagate(0)
         self.lblDisplay = ttk.Label(self, font='verdana, 10', width = 2)
@@ -89,7 +87,7 @@ class Movements(ttk.Frame):
             while i <=6:
                 if i == 3 or i == 5 or i == 6:
                     movement[i]='{0:.6f}'.format(movement[i])
-                self.lblDisplay = ttk.Label(self.frame, text=movement[i], font='Verdana, 10',width= 16, background ='white', borderwidth=1,relief=GROOVE, anchor=CENTER)
+                self.lblDisplay = ttk.Label(self.frame, text=movement[i], font='Verdana, 10',width= 16, background ='white', foreground ='black', borderwidth=1, relief=GROOVE, anchor=CENTER)
                 self.lblDisplay.grid(row=j, column=i)
                 self.lblDisplay.grid_propagate(0)
                 if i == 3 or i == 5 or i == 6:
@@ -106,11 +104,11 @@ class Movements(ttk.Frame):
 
 class NewTransaction(ttk.Frame):
     def __init__(self, parent, **kwargs):
-        ttk.Frame.__init__(self, height=210, width =_width, borderwidth=2, relief= GROOVE)
+        ttk.Frame.__init__(self, height=100, width =_width, borderwidth=2, relief= GROOVE)
         self.simulador=parent
 
-        self.s = ttk.Style() #Creamos el style paa este frame ------
-        self.s.configure('TFrame', background='white') #aplicamos el stylo---------
+        #self.s = ttk.Style() #Creamos el style paa este frame ------
+        #self.s.configure('TFrame', background='blue') #aplicamos el stylo---------
 
         #variables de control
         self.strFrom_Q = StringVar(value='')
@@ -120,7 +118,7 @@ class NewTransaction(ttk.Frame):
         self.getFromCrypto = StringVar()
         self.getToCrypto = StringVar()
          
-        ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, padx=1, pady=20, sticky=W)
+        ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, ipadx=20, padx=1, pady=20, sticky=W)
         ttk.Label(self, text='From:', width=_lblwidth, font=font, anchor=E).grid(column=0, row=1, padx=_padx, pady=_pady)
         ttk.Label(self, text='Q:', width=_lblwidth, font=font, anchor=E).grid( column=0, row =2, padx=_padx, pady=_pady)
         ttk.Label(self, text='To:', width=_lblwidth, font=font, anchor=E).grid(column=2, row=1, padx=_padx, pady=_pady)
@@ -146,11 +144,11 @@ class NewTransaction(ttk.Frame):
         self.valuesComboBox()
 
         self.cancelButton = ttk.Button(self, text='Cancelar', command=lambda: self.switchNewTransaction(FALSE,TRUE), state='disable')
-        self.cancelButton.grid(column=4, row=1, padx=30, pady=_pady)
+        self.cancelButton.grid(column=4, row=1, ipadx="8", padx=10, pady=_pady, sticky="W")
         self.checkButton = ttk.Button(self, text = 'Comprobar', command =lambda: self.checkTransaction(FALSE), state='disable')
-        self.checkButton.grid(column=4, row=2, padx=30, pady=_pady)
+        self.checkButton.grid(column=4, row=2, padx=10, pady=_pady, sticky="W")
         self.acceptButton = ttk.Button(self, text='Aceptar', command=lambda: self.checkTransaction(), state='disable')
-        self.acceptButton.grid(column=4, row=3, padx=100, pady=_pady)
+        self.acceptButton.grid(column=4, row=3, ipadx="8", padx=10, pady=_pady, sticky="W")
     
     def selectNewCryptoInComboBox(self, event):
         #reactivar boton aceptar y limpia label 
@@ -325,17 +323,18 @@ class NewTransaction(ttk.Frame):
 
 class Results(ttk.Frame):
     def __init__(self, parent, **kwargs):
-        ttk.Frame.__init__(self, height=kwargs['height'],width = kwargs['width'])
+        ttk.Frame.__init__(self, height=kwargs['height'],width = kwargs['width'], relief= GROOVE)
         
-        ttk.Label(self, text='€ invertidos:', font= font, anchor=E, width = _lblwidth).grid(column=0,row =3, padx=_padx)
-        ttk.Label(self, text='Valor actual:', font= font, anchor=E, width = _lblwidth).grid(column=2,row=3, padx=_padx)
+        ttk.Label(self, text='Tu inversión', font= font, anchor=E, width =_lblwidth).grid(column=0,row =3, ipady=1, ipadx=1, pady=3, padx=5)
+        ttk.Label(self, text='€ invertidos:', font= font, anchor=E, width = _lblwidth).grid(column=0,row =4, padx=_padx)
+        ttk.Label(self, text='Valor actual:', font= font, anchor=E, width = _lblwidth).grid(column=2,row=4, padx=_padx)
         
         self.moneySpendLbl=ttk.Label(self, font=font,background ='white', anchor=E, relief=GROOVE, width=22)
-        self.moneySpendLbl.grid(column=1, row=3, padx=_padx)
+        self.moneySpendLbl.grid(column=1, row=4, padx=_padx)
         self.currentValueLbl=ttk.Label(self, font=font,background ='white', relief=GROOVE, anchor=E, width=22)
-        self.currentValueLbl.grid(column=3, row=3, padx=_padx)
+        self.currentValueLbl.grid(column=3, row=4, padx=_padx)
         self.calculateButton=ttk.Button(self, text='Calcular', command=lambda: self.earnings())
-        self.calculateButton.grid(column=4, row=3, padx= 55, pady=_pady)
+        self.calculateButton.grid(column=4, row=4, ipadx= "8", padx= 10, pady=_pady)
     
     def moneySpend(self):
         #calcula el total de euros invertidos
@@ -385,10 +384,10 @@ class Results(ttk.Frame):
 
 class Simulador(ttk.Frame):
     def __init__(self, parent):
-        ttk.Frame.__init__(self, width='980', height='600') 
+        ttk.Frame.__init__(self, width="910", height="600") 
 
-        self.s = ttk.Style() #Create style used by default for all Frames ------
-        self.s.configure('TFrame', background='green') #---------
+        self.s = ttk.Style() #Creamos el style usado para este Frame ------
+        self.s.configure('TFrame', background='white') #---------
         #tab1 = ttk.Frame(Frame, style='Simulador.TFrame')
         #mainframe.add(tab1, text="Tab1")
         #self.config(background="#49A") #-----
@@ -397,22 +396,23 @@ class Simulador(ttk.Frame):
         initDBCryptos= movementsDB.inicialVerification()
         if not initDBCryptos:
             self.initializationBDCryptos()
-        #estructuración de la aplicación
-        self.Button1 = ttk.Button(self, text ='+ Transación', command=lambda: self.buttonSimulador(), width=10)
-        self.Button1.place(x=860, y=40)
 
-        self.movements =Movements(self, height=240, width= _width)
+        #estructuración de la aplicación
+        self.Button1 = ttk.Button(self, text ='+ Nueva transación', command=lambda: self.buttonSimulador(), width=15)
+        self.Button1.place(x=700, y=245)
+
+        self.movements =Movements(self, height=240, width=_width)
         #self.movements.grid(column=0, row=0, padx=20)
-        self.movements.place(x=20,y=20)
+        self.movements.place(x=40,y=30)
         
         self.newTransaction= NewTransaction(self, height=220, width=_width)
         #self.newTransaction.grid(column=0, row=1, padx=20)
-        self.newTransaction.place(x=40, y=260)
+        self.newTransaction.place(x=40, y=280)
         
 
         self.results = Results(self, height=100, width=_width)
         #self.results.grid(column=0, row=2, pady=40)
-        self.results.place(x=40, y=500)
+        self.results.place(x=40, y=480)
 
     def addNewMovementintoMovement(self):
         #pinta los movimientos después de una transacción y actualiza la scrollbar
@@ -452,7 +452,7 @@ class MainApp(Tk):
 
     def __init__(self):
         Tk.__init__(self)
-        self.geometry("980x600")
+        self.geometry("910x600")
         self.title("INVIERTE EN CRYPTOS")
         self.resizable(0,0)
         self.simulador = Simulador(self)

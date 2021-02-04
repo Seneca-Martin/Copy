@@ -112,6 +112,7 @@ def addNewMovement(data, time, from_currency, to_currency,from_quantity, to_quan
                                         to_currency,
                                         to_quantity,
         ))
+
     except sqlite3.Error as e:
         
         print('Error en base de datos : {}'.format(e))
