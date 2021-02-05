@@ -27,7 +27,7 @@ def CryptosDBInformed(cryptos):
             INSERT into cryptos
             (symbol, name)
             values (?, ?);
-           '''
+            '''
 
     try:
         for i in range (len(cryptos)):
@@ -38,9 +38,8 @@ def CryptosDBInformed(cryptos):
     conn.commit()
     conn.close()
 
-
 def listCryptosIni():
-    #Entrega lista con symbol y nombre de cryptos en las que ya se ha invertido mas los Euros---------------
+    #Entrega symbol y nombre de la moneda Euros para la primera operación debido a que la tabla To_Currency está vacia---------------
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -56,7 +55,7 @@ def listCryptosIni():
     for row in rows:
         text= '{} - {}'.format(row[0], row[1])
         cryptosInverts.append(text)
-        
+
     conn.close()
     return cryptosInverts
 
@@ -78,32 +77,23 @@ def listCryptos():
     conn.close()
     return cryptos
 
-
 def listCryptosInvert():
     #Entrega lista con symbol y nombre de cryptos en las que ya se ha invertido mas los Euros---------------
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
-
-    #query2 = '''
-       # SELECT symbol, name
-       # FROM cryptos  
-       # WHERE cryptos.id=13;
-    #'''
 
     query = '''
         SELECT DISTINCT symbol, name
         FROM cryptos INNER JOIN movements
         WHERE  to_currency= cryptos.id OR cryptos.id=13 ORDER BY symbol;
     '''
-
     rows=cursor.execute(query)
     cryptosInverts=[]
     text=''
- 
     for row in rows:
         text= '{} - {}'.format(row[0], row[1])
         cryptosInverts.append(text)
- 
+
     conn.close()
     return cryptosInverts
 
@@ -124,14 +114,14 @@ def printMovementsDB():
     return(movements) 
 
 def addNewMovement(data, time, from_currency, to_currency,from_quantity, to_quantity):
-   #añadir nuevo movimiento en DB
+    #añadir nuevo movimiento en DB
     conn =  sqlite3.connect(database)
     cursor = conn.cursor()
 
     query = '''
         INSERT INTO movements
-               (date, time, from_currency, from_quantity, to_currency, to_quantity)
-               values (?, ?, ?, ?, ?, ?);
+            (date, time, from_currency, from_quantity, to_currency, to_quantity)
+            values (?, ?, ?, ?, ?, ?);
             '''
     try:
         rows = cursor.execute(query, (  data,
@@ -203,7 +193,7 @@ def getIdFromToCryptoDB(crypto, isCrytpo = True):
     cursor.execute(query,(crypto,))
     n=cursor.fetchone()
     return (n[0])
-  
+
 def symbolCrytpo():
     #obteniendo los symbol de las cryptos de la tabla
     conn = sqlite3.connect(database)
