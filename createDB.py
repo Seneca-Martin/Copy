@@ -1,6 +1,6 @@
 import sqlite3
 
-database = ('data/movements1.db')
+database = ('data/movements.db')
 
 conn=sqlite3.connect(database)
 
@@ -29,8 +29,8 @@ def createMovements ():
                               to_quantity REAL NOT NULL
                         )''')
         print("se creo la tabla movements")                        
-    except sqlite3.OperationalError as e:
-        print("La tabla movements ya existe", e)                    
+    except sqlite3.OperationalError
+        print("La tabla movements ya existe")                    
 
 createCryptos()
 createMovements()
