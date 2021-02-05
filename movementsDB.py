@@ -38,6 +38,28 @@ def CryptosDBInformed(cryptos):
     conn.commit()
     conn.close()
 
+
+def listCryptosIni():
+    #Entrega lista con symbol y nombre de cryptos en las que ya se ha invertido mas los Euros---------------
+    conn = sqlite3.connect(database)
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT symbol, name
+        FROM cryptos  
+        WHERE cryptos.id=13;
+    '''
+    rows=cursor.execute(query)
+    cryptosInverts=[]
+    text=''
+
+    for row in rows:
+        text= '{} - {}'.format(row[0], row[1])
+        cryptosInverts.append(text)
+        
+    conn.close()
+    return cryptosInverts
+
 def listCryptos():
     #Entrega lista con symbol y nombre de cryptos que hay en DBcryptos
     conn = sqlite3.connect(database)
@@ -62,19 +84,26 @@ def listCryptosInvert():
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
+    #query2 = '''
+       # SELECT symbol, name
+       # FROM cryptos  
+       # WHERE cryptos.id=13;
+    #'''
+
     query = '''
         SELECT DISTINCT symbol, name
-        FROM cryptos, movements  
-        WHERE cryptos.id=13 OR to_currency= cryptos.id ORDER BY symbol;
+        FROM cryptos INNER JOIN movements
+        WHERE  to_currency= cryptos.id OR cryptos.id=13 ORDER BY symbol;
     '''
 
     rows=cursor.execute(query)
     cryptosInverts=[]
     text=''
+ 
     for row in rows:
         text= '{} - {}'.format(row[0], row[1])
         cryptosInverts.append(text)
-    
+ 
     conn.close()
     return cryptosInverts
 

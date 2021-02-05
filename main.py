@@ -17,7 +17,7 @@ _padx=4
 
 config = configparser.ConfigParser()
 config.read("config.ini")
-        
+
 api_key = config['default']['API_KEY']
 cryptos = config['default']['GET_CRYPTOS_EP']
 price_conversion = config['default']['VALUE_CRYPTO_EP']
@@ -45,11 +45,11 @@ class Movements(ttk.Frame):
         self.canvas.config(width=801,height= 180)
         self.canvas.grid_propagate(0)
         self.verticaScrollbar.config(command=self.canvas.yview)
-       
+
         self.frame = Frame(self.canvas, width=801, height= 180)
         
         self.printMovements()
-          
+        
         self.windows=self.canvas.create_window(0,0, anchor=NW, window=self.frame)
         
         self.frame.update_idletasks()
@@ -117,7 +117,7 @@ class NewTransaction(ttk.Frame):
 
         self.getFromCrypto = StringVar()
         self.getToCrypto = StringVar()
-         
+
         ttk.Label(self, text='Nueva transacción', width=20,font=font, anchor=CENTER).grid(column=0,row=0, columnspan=2, ipadx=20, padx=1, pady=20, sticky=W)
         ttk.Label(self, text='From:', width=_lblwidth, font=font, anchor=E).grid(column=0, row=1, padx=_padx, pady=_pady)
         ttk.Label(self, text='Q:', width=_lblwidth, font=font, anchor=E).grid( column=0, row =2, padx=_padx, pady=_pady)
@@ -141,6 +141,7 @@ class NewTransaction(ttk.Frame):
         self.toCryptoCombo = ttk.Combobox(self, width=20, font=font, textvariable= self.getToCrypto, values=NONE, state='disable')
         self.toCryptoCombo.grid(column=3, row=1)
         self.toCryptoCombo.bind("<<ComboboxSelected>>", self.selectNewCryptoInComboBox)
+        self.valuesComboBoxIni()
         self.valuesComboBox()
 
         self.cancelButton = ttk.Button(self, text='Cancelar', command=lambda: self.switchNewTransaction(FALSE,TRUE), state='disable')
@@ -206,15 +207,15 @@ class NewTransaction(ttk.Frame):
             else:
                 if self._from == self._to:
                     #self.controlErrorCryptos.config(text='Los campos From y To deben ser distintos')
-                    self.controlErrorCryptos.config(messagebox.showinfo(message="Los campos From y To deben ser distintos", title="¡¡Ups, algo falla!!"))
+                    self.controlErrorCryptos.config(messagebox.showinfo(message="¿De veras quieres invertir en la misma moneda? Los campos From y To deben ser distintos", title="¡¡Ups, algo falla!!"))
                 if self.strFrom_Q.get() == '0' or self.strFrom_Q.get() =='':
                     #self.controlErrorCryptos.config(text='{} El valor Q debe ser mayor que 0. '.format(self.controlErrorCryptos.config('text')[4]))
-                    self.controlErrorCryptos.config(messagebox.showinfo(message="El valor Q debe ser mayor que 0", title="¡¡Ups, algo falla!!"))
+                    self.controlErrorCryptos.config(messagebox.showinfo(message="¡Que pasa!, ¿no encuentras nada en la hucha? Para invertir el valor Q debe ser mayor que 0", title="¡¡Ups, algo falla!!"))
                 self.acceptButton.config(state='disable')
                 return(FALSE)    
         else:
             #self.controlErrorCryptos.config(text ='Los campos From y To deben estar informados.')
-            self.controlErrorCryptos.config(messagebox.showinfo(message="Los campos From y To deben estar informados", title="¡¡Ups, algo falla!!"))
+            self.controlErrorCryptos.config(messagebox.showerror(message="Los campos From y To deben estar informados", title="¡¡Ups, algo falla!!"))
             return(FALSE)   
         
     def valueFromQValidate(self):
@@ -229,7 +230,7 @@ class NewTransaction(ttk.Frame):
             if self.cryptoInvertida < float(self.strFrom_Q.get()):
                 self.acceptButton.config(state= 'disable')
                 #self.controlErrorCryptos.config(text='Actualmente dispones de {} {}. Modifique el valor para realizar la transacción'.format(self.cryptoInvertida,self._from))
-                self.controlErrorCryptos.config(messagebox.showinfo(message="Actualmente dispones de {} {}. Modifique el valor para realizar la transacción".format(self.cryptoInvertida,self._from), title="¡¡Ups, algo falla!!"))
+                self.controlErrorCryptos.config(messagebox.showinfo(message="Actualmente dispones de {} {}. Modifica el valor para realizar la transacción".format(self.cryptoInvertida,self._from), title="¡¡Ups, algo falla!!"))
                 return(FALSE)
             else:
                 return(TRUE)  
@@ -267,7 +268,7 @@ class NewTransaction(ttk.Frame):
             except Exception as e:
                 error=('Se ha producido una incidencia:',e)
                 #self.controlErrorCryptos.config(text=error)
-                self.controlErrorCryptos.config(messagebox.showinfo(message=error, title="¡¡Ups, algo falla!!"))
+                self.controlErrorCryptos.config(messagebox.showerror(message="Se ha producido una Incidencia", title="¡¡Ups, algo falla!!"))
 
     def addNewTransactionIntoDB(self,symbolCrypto_from, symbolCrypto_to):
         #procesa y obtiene la información que se necesita para la DB
@@ -279,15 +280,20 @@ class NewTransaction(ttk.Frame):
         from_quantity= float(self.strFrom_Q.get())
         movementsDB.addNewMovement(data, hour, from_currency,to_currency,self.strFrom_Q.get(), self.cryptoPriceTo)
 
+    def valuesComboBoxIni(self):
+        #informa ComboBox con el EUR en From y con todas las cryptos en el To
+        result = movementsDB.listCryptos()
+        resultFrom = movementsDB.listCryptosIni()
+        self.toCryptoCombo.config(values=result)
+        self.fromCryptoCombo.config(values=resultFrom)
+
     def valuesComboBox(self):
         #informa ComboBox con las cryptos
         result = movementsDB.listCryptos()
-        resultFrom = movementsDB.listCryptosInvert() #and calculateCurrentValueApi.resultCurrentValue != 0-------
-        #resultFrom = movementsDB.getIdFromToCryptoDB(symbolCrypto_from) #----------
+        resultFrom = movementsDB.listCryptosInvert()
         self.toCryptoCombo.config(values=result)
-        #self.fromCryptoCombo.config(values=result)---Este era el bueno antiguo
-        self.fromCryptoCombo.config(values=resultFrom) #---------
-       
+        self.fromCryptoCombo.config(values=resultFrom)
+    
     def switchNewTransaction(self, switch_On = FALSE , transactionButton=FALSE):
         #interruptor que activa y desactiva el frame newtransaction, tambien desactiva el boton de nueva transacción hasta que cancela o se realiza la nueva transaccion
         if switch_On:
@@ -360,7 +366,7 @@ class Results(ttk.Frame):
             return(0)
     
     def currentValue(self,cryptos):
-        #el bucle for recorre las cryptos excepto eur y calcula por cada crypto en from y to
+        #el bucle for recorre las cryptos excepto EUR y calcula por cada crypto en from y to
         totalCurrentValuesResults = 0
         for i in range (len(cryptos)-1):
             sumatorioFromCrypto= movementsDB.MoneySpend(cryptos[i])
@@ -422,7 +428,7 @@ class Simulador(ttk.Frame):
         #pinta los movimientos después de una transacción y actualiza la scrollbar
         self.movements.printMovements()
         self.movements.actualizarScrollregion()
-           
+
     def buttonSimulador(self):
         #activa labels de newtransaction y limpia labels results
         self.newTransaction.switchNewTransaction(TRUE)
@@ -458,14 +464,13 @@ class MainApp(Tk):
         Tk.__init__(self)
         self.geometry("910x600")
         self.title("INVIERTE EN CRYPTOS")
-        #self.config(bg='#434346')
         self.resizable(0,0)
         self.simulador = Simulador(self)
         self.simulador.place(x=0, y=0)
 
         s = ttk.Style() # ------
         s.theme_use('aqua') # -------
-       
+    
     def start(self):
         self.mainloop()
 
