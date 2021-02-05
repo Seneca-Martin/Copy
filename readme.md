@@ -1,6 +1,6 @@
 # Invierte en Cryptos
 
-Bienvenid@ al simulador de inversiones en cryptos, esta aplicación consulta el valor real en euros de las doce cryptomonedas con mayor volumen de negocios en la actualidad (2021).
+Bienvenid@ al simulador de inversiones en cryptos. Esta aplicación consulta el valor real en euros de las doce cryptomonedas con mayor volumen de negocios en la actualidad (2021).
 
 Para poder utilizar la aplicación debes de seguir los siguiente pasos para su correcta instalación y uso.
 
@@ -11,7 +11,7 @@ Para poder utilizar la aplicación debes de seguir los siguiente pasos para su c
     pip install -r requirements.txt
     ```
 
-2. Crea ahora tu base de datos necesaria, para ello ejecuta el archivo: **createDB.py**
+2. Crea ahora tu base de datos necesaria ejecutando el archivo: **createDB.py**
 
 3. Crea en este momento tu fichero config.ini
 
@@ -25,7 +25,7 @@ Para poder utilizar la aplicación debes de seguir los siguiente pasos para su c
 
 Esta es la aplicación que simula inversiones en crytomonedas en el momento de su ejecución, estas inversiones funcionan de la siguiente manera:
 
-* Para comenzar a operar debemos crear una transacción para ello pulsaremos en el botón "+ Nueva transación"
+* Para comenzar a operar debemos crear una transacción, para ello pulsaremos en el botón "+ Nueva transación"
 
 * En este punto se activaran los combos y campos de la zona "Nueva transación" para poder realizar las conversiones.
 

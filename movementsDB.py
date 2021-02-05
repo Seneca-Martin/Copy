@@ -44,7 +44,7 @@ def listCryptos():
     cursor = conn.cursor()
 
     query = '''
-            SELECT symbol, name FROM cryptos;
+            SELECT symbol, name FROM cryptos ORDER BY symbol;
     '''
     rows=cursor.execute(query)
     cryptos=[]
@@ -65,7 +65,7 @@ def listCryptosInvert():
     query = '''
         SELECT DISTINCT symbol, name
         FROM cryptos, movements  
-        WHERE cryptos.id=13 OR to_currency= cryptos.id;
+        WHERE cryptos.id=13 OR to_currency= cryptos.id ORDER BY symbol;
     '''
 
     rows=cursor.execute(query)
